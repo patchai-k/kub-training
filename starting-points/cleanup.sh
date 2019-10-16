@@ -1,10 +1,10 @@
-#!/bin/sh
+#!/bin/bash
 
 cd `dirname "$0"`
 lab_name=$1
 
-#todo: change workspace dir to something more exact
-repo_dir=../
+#TODO: change workspace dir to something more exact
+repo_dir=..
 
 # Check for lab name
 if [ -z ${lab_name} ]; then
@@ -15,13 +15,13 @@ fi
 
 # Backup current work directory
 set -ex
-mkdir -p $repo_dir/workspace_backup/$lab_name
-mv -rf $repo_dir/workspace $repo_dir/workspace_backup/$lab_name
+mkdir -p $repo_dir/workspace_backup/${lab_name}/workspace
+mv -f $repo_dir/workspace/* $repo_dir/workspace_backup/${lab_name}/workspace
 mkdir -p $repo_dir/workspace
 set +ex
 
 # backup kubernetes objects
-kubectl get all > $repo_dir/workspace_backup/$lab_name/_k8s_object_backup.yaml
+kubectl get all -o yaml > $repo_dir/workspace_backup/$lab_name/_k8s_object_backup.yaml
 
 # Clean up all k8s objects
 objects=(hpa ingress services networkpolicy deployments replicasets statefulsets daemonsets jobs pods secrets configmaps persistentvolumeclaim persistentvolume)
@@ -33,7 +33,6 @@ done
 echo ""
 echo "Use this script with caution!"
 echo ""
-
 
 for obj in ${objects[@]}; do
   set -x

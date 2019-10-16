@@ -1,10 +1,10 @@
-#!/bin/sh
+#!/bin/bash
 
 cd `dirname "$0"`
 lab_name=$1
 
-#todo: change workspace dir to something more exact
-repo_dir=../
+#TODO: change workspace dir to something more exact
+repo_dir=..
 
 # Check for lab name
 if [ -z ${lab_name} ]; then
@@ -23,17 +23,20 @@ fi
 echo "Will deploy lab $lab_name"
 echo "Notice: this will replace any pre-existing files and kubernetes objects"
 
-# show output and fail on errors
-set -ex
-
-ls
 
 # Copy workspace contents
-rm -rf $repo_dir/workspace
-cp -rf $lab_name/workspace $repo_dir/
+set -ex
+mkdir -p $repo_dir/workspace/
+rm -rf $repo_dir/workspace/*
+cp -rf $lab_name/workspace/* $repo_dir/workspace/
+set +ex
 
 # Deploy kubernetes objects
+set -e
 if [ -r $lab_name/objects.yaml ]; then
   kubectl delete -f $lab_name/objects.yaml
-  kubectl create -f $lab_name/objects.yaml
+  kubectl apply -f $lab_name/objects.yaml
+else
+  echo "No Kubernetes objects to create"
 fi
+set +e
