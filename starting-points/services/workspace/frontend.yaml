@@ -1,0 +1,12 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: frontend
+spec:
+  containers:
+  - name: frontend
+    image: gcr.io/barry-williams/sample-k8s-app:1.0.0
+    command: ["app", "-mode=frontend", "-backend-service=http://<REPLACE_WITH_BACKEND_SERVICE>:8080", "-port=80"]
+    ports:
+    - name: frontend
+      containerPort: 80
