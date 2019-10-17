@@ -27,8 +27,7 @@ echo "Notice: this will replace any pre-existing files and kubernetes objects"
 # Copy workspace contents
 set -ex
 mkdir -p $repo_dir/workspace/
-rm -rf $repo_dir/workspace/*
-cp -rfp $lab_name/workspace/* $repo_dir/workspace/
+rsync -a --delete $lab_name/workspace/ $repo_dir/workspace/
 set +ex
 
 # Deploy kubernetes objects
