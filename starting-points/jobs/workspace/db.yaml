@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: db
+  labels:
+    app: gceme
+    role: db
+spec:
+  containers:
+  - image: mysql:5.6
+    name: mysql
+    env:
+    - name: MYSQL_ROOT_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: mysql
+          key: password
+    ports:
+    - containerPort: 3306
+      name: mysql
