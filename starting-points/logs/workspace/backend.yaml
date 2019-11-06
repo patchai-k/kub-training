@@ -1,0 +1,31 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: backend
+  labels:
+    app: gceme
+    role: backend
+spec:
+  initContainers:
+  - name: init-db
+    image: gcr.io/barry-williams/sample-k8s-app:1.0.0
+    command: ["sh", "-c", "app -run-migrations -port=8080 -db-host=db -db-password=$MYSQL_ROOT_PASSWORD" ]
+    env:
+    - name: MYSQL_ROOT_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: mysql
+          key: password
+  containers:
+  - name: backend
+    image: gcr.io/barry-williams/sample-k8s-app:1.0.0
+    env:
+    - name: MYSQL_ROOT_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: mysql
+          key: password
+    command: ["sh", "-c", "app -mode=backend -run-migrations -port=8080 -db-host=db -db-password=$MYSQL_ROOT_PASSWORD" ]
+    ports:
+    - name: backend
+      containerPort: 8080
