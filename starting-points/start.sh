@@ -25,17 +25,13 @@ echo "Notice: this will replace any pre-existing files and kubernetes objects"
 
 
 # Copy workspace contents
-set -ex
 mkdir -p $repo_dir/workspace/
-rsync -a --delete $lab_name/workspace/ $repo_dir/workspace/
-set +ex
+rm -rf $repo_dir/workspace/*
+cp -R $lab_name/workspace/* $repo_dir/workspace/
 
 # Deploy kubernetes objects
 set -e
 if [ -r $lab_name/objects.yaml ]; then
-  set +e
-  kubectl delete -f $lab_name/objects.yaml
-  set -e
   kubectl apply -f $lab_name/objects.yaml
 else
   echo "No Kubernetes objects to create"
