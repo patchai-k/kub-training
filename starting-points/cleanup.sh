@@ -3,7 +3,7 @@
 cd `dirname "$0"`
 lab_name=$1
 
-#TODO: change workspace dir to something more exact
+#TODO: change repo dir to something more exact
 repo_dir=..
 
 # Check for lab name
@@ -14,28 +14,34 @@ if [ -z ${lab_name} ]; then
 fi
 
 # Backup current work directory
-set -ex
 mkdir -p $repo_dir/workspace_backup/${lab_name}/workspace
+# TODO: let this fail gracefully when workspace dir is empty
 mv -f $repo_dir/workspace/* $repo_dir/workspace_backup/${lab_name}/workspace
 mkdir -p $repo_dir/workspace
-set +ex
 
 # backup kubernetes objects
 kubectl get all -o yaml > $repo_dir/workspace_backup/$lab_name/_k8s_object_backup.yaml
 
 # Clean up all k8s objects
-objects=(hpa ingress services networkpolicy deployments replicasets statefulsets daemonsets jobs pods secrets configmaps persistentvolumeclaim persistentvolume)
+objects=(hpa networkpolicy deployments replicasets statefulsets daemonsets jobs pods secrets configmaps persistentvolumeclaim persistentvolume)
 echo ""
-echo "This will delete ALL of the following kubernetes objects in the user's namespace:"
-for obj in ${objects[@]}; do
-  echo "* $obj"
-done
-echo ""
+echo "This will delete objects in the current namespace"
 echo "Use this script with caution!"
 echo ""
-
+echo "Deleting:"
 for obj in ${objects[@]}; do
-  set -x
+  echo "* $obj"
   kubectl delete $obj --all --now
-  set +x
+done
+
+echo "* services - all non-LoadBalancer services"
+# get list of all service names
+services=( $(kubectl get services -o jsonpath='{.items[*].metadata.name}') )
+
+# delete if not LoadBalancer
+for svc in ${services[@]}; do
+  type=$(kubectl get service $svc -o jsonpath='{.spec.type}')
+  if [ "$type" != "LoadBalancer" ]; then
+    kubectl delete service $svc
+  fi
 done
