@@ -88,3 +88,10 @@ more easily.
 
 You will *not* need to change the `db` deployment or service:
 They work.
+
+## **IMPORTANT CLEANUP**
+Run the following to cleanup your environment
+
+```shell
+~/kubernetes-training/starting-points/cleanup.sh trouble
+```
