@@ -84,7 +84,7 @@ troubleshooting lab is below.
     Incorrect/original:
 
     ```
-    image: gcr.io/dduck-quack/puddle:2.4
+    image: gcr.io/dduck-quack/puddle:9.8
     ```
 
     Correct:
