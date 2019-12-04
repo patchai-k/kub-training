@@ -13,4 +13,4 @@ For each developer focused lab:
 - creates starting point kubernetes objects with `kubectl apply -f starting-points/<lab name>/objects.yaml`
 
 
-`cleanup.sh <lab name>` - this script backs up the students work and cleans up after a lab. It will destroy most kubernetes objects in the the students workspace. It will leave LoadBalancer services and ingress objects, as these objects take may take time to setup (usually because of IaaS activities). Backups of the working directory and kubernetes objects are stored in `~/workspace_backup/<lab name>`
+`cleanup.sh <lab name>` - this script backs up the student's work and cleans up after a lab. It will destroy most kubernetes objects in the the student's workspace. It will leave LoadBalancer services and ingress objects, as these objects take may take time to setup (usually because of IaaS activities). Backups of the working directory and kubernetes objects are stored in `~/workspace_backup/<lab name>`
