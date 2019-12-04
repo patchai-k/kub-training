@@ -94,4 +94,5 @@ Run the following to cleanup your environment
 
 ```shell
 ~/kubernetes-training/starting-points/cleanup.sh trouble
+kubectl delete svc web
 ```
