@@ -10,7 +10,7 @@ Run the following to create Kubernetes objects that contain errors:
 
 
 ```shell
-~/kubernetes-training/starting-points/start.sh trouble
+~/kubernetes-training/starting-points/start.sh troubleshooting
 ```
 
 ## The app
@@ -93,6 +93,6 @@ They work.
 Run the following to cleanup your environment
 
 ```shell
-~/kubernetes-training/starting-points/cleanup.sh trouble
+~/kubernetes-training/starting-points/cleanup.sh troubleshooting
 kubectl delete svc web
 ```
