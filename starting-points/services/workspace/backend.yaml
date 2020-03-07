@@ -1,0 +1,12 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: backend
+spec:
+  containers:
+  - name: backend
+    image: gcr.io/barry-williams/sample-k8s-app:1.0.0
+    command: ["sh", "-c", "app -mode=backend -run-migrations -port=8080 -db-host=<REPLACE_WITH_MYSQL_SERVICE> -db-password=very-secret-password" ]
+    ports:
+    - name: backend
+      containerPort: 8080

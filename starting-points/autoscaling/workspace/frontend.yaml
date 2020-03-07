@@ -1,0 +1,24 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gceme
+      role: frontend
+  template:
+    metadata:
+      name: frontend
+      labels:
+        app: gceme
+        role: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: gcr.io/barry-williams/sample-k8s-app:1.0.0
+        command: ["app", "-mode=frontend", "-backend-service=http://backend:8080", "-port=80"]
+        ports:
+        - name: frontend
+          containerPort: 80
